@@ -1,5 +1,5 @@
 import { DateTime, DateTimeUnit } from "luxon";
-import { useSyncExternalStore } from "react";
+import { useEffect, useState } from "react";
 import { BehaviorSubject, distinctUntilChanged, interval, map } from "rxjs";
 
 const $second = (() => {
@@ -39,7 +39,6 @@ const $week = deriveTimeObservable($day, "week");
 
 /**
  * Provides you with a behavior subject's current value.
- * Please note that this hook doesn't support changing the behavior subject after the first call
  * @template T The value's type
  * @param behaviorSubject The behavior subject from which to get the value
  * @returns The behavior subject's current value
@@ -47,14 +46,15 @@ const $week = deriveTimeObservable($day, "week");
 export function useBehaviorSubjectValue<T>(
   behaviorSubject: BehaviorSubject<T>
 ): T {
-  return useSyncExternalStore(
-    (onStoreChange) => {
-      const subscription = behaviorSubject.subscribe(onStoreChange);
+  const [value, setValue] = useState<T>(() => behaviorSubject.value);
 
-      return () => subscription.unsubscribe();
-    },
-    () => behaviorSubject.value
-  );
+  useEffect(() => {
+    const subscription = behaviorSubject.subscribe(setValue);
+
+    return () => subscription.unsubscribe();
+  }, [behaviorSubject]);
+
+  return value;
 }
 
 export function useTime(unit: "second" | "minute" | "hour" | "day" | "week") {
