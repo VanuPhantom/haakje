@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Provides extra hooks to make working with React hooks easier",
   "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "scripts": {
     "build": "tsc"
   },
