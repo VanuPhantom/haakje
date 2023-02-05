@@ -3,10 +3,12 @@ import { useSyncExternalStore } from "react";
 import { BehaviorSubject, distinctUntilChanged, interval, map } from "rxjs";
 
 const $second = (() => {
-  const $secondInternal = new BehaviorSubject<DateTime>(DateTime.now());
+  const $secondInternal = new BehaviorSubject<DateTime>(
+    DateTime.now().startOf("second")
+  );
 
   interval(1000)
-    .pipe(map(() => DateTime.now()))
+    .pipe(map(() => DateTime.now().startOf("second")))
     .subscribe($secondInternal);
 
   return $secondInternal;
