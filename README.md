@@ -11,9 +11,6 @@ _Haakje_ is a library containing little hooks to make building React apps easier
 
 `useTime` provides you with the current time as a Luxon `DateTime` object. It provides you with the start of the current time at the granularity you request.
 
-**PLEASE NOTE:**
-Currently, changing the granularity after the first call isn't supported.
-
 ```jsx
 import { useTime } from "haakje";
 
@@ -27,9 +24,6 @@ export default function App() {
 ## `useBehaviorSubjectValue`
 
 `useBehaviorSubjectValue` provides you with a behavior subject's current value.
-
-**PLEASE NOTE:**
-Currently, switching to another behavior subject after the first call isn't supported.
 
 ```javascript
 import { useBehaviorSubjectValue } from "haakje";
