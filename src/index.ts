@@ -8,6 +8,7 @@ import {
   Observable,
   partition,
 } from "rxjs";
+import { referentiallyCompareArrayItems } from "./util";
 
 const $second = (() => {
   const $secondInternal = new BehaviorSubject<DateTime>(
@@ -133,4 +134,31 @@ export function useTime(unit: "second" | "minute" | "hour" | "day" | "week") {
       week: $week,
     }[unit]
   );
+}
+
+/**
+ * Does exactly the same as useMemo, but guarantees referential stability
+ * @param compute A function which returns the memo's value
+ * @param dependencies An array of values which are used to determine the memo's value
+ * @returns The return value of the function you provide
+ */
+export function useReferentiallyStableMemo<T>(
+  compute: () => T,
+  dependencies: unknown[]
+): T {
+  const valueRef = useRef<T>();
+  const dependencyRef = useRef<unknown[]>();
+
+  const getValue = () => (valueRef.current ??= compute());
+
+  if (
+    dependencyRef.current === undefined ||
+    !referentiallyCompareArrayItems(dependencyRef.current, dependencies)
+  ) {
+    dependencyRef.current = dependencies;
+
+    return (valueRef.current = compute());
+  }
+
+  return getValue();
 }
