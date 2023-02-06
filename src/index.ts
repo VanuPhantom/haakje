@@ -3,13 +3,10 @@ import { useEffect, useRef, useState } from "react";
 import {
   BehaviorSubject,
   distinctUntilChanged,
-  first,
   interval,
   map,
   Observable,
   partition,
-  skip,
-  Subscription,
 } from "rxjs";
 
 const $second = (() => {
@@ -67,6 +64,12 @@ export function useBehaviorSubjectValue<T>(
   return value;
 }
 
+/**
+ * Provides you with an observable's latest emission
+ * @param observable The observable whose latest emission to return
+ * @param initialValue The value to return before the first emission
+ * @returns The observable's latest emission, or initalValue if the observable hasn't emitted yet
+ */
 export function useLatestEmissionFromObservable<T>(
   observable: Observable<T>,
   initialValue?: T
