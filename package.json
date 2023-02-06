@@ -1,6 +1,6 @@
 {
   "name": "haakje",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Provides extra hooks to make working with React hooks easier",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
