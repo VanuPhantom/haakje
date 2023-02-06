@@ -67,7 +67,7 @@ export function useBehaviorSubjectValue<T>(
   return value;
 }
 
-export function useObservable<T>(
+export function useLatestEmissionFromObservable<T>(
   observable: Observable<T>,
   initialValue?: T
 ): T {
