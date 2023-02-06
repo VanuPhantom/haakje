@@ -64,6 +64,8 @@ export function useBehaviorSubjectValue<T>(
   return value;
 }
 
+const EMPTY_PARAMETER = Symbol();
+
 /**
  * Provides you with an observable's latest emission
  * @param observable The observable whose latest emission to return
@@ -72,13 +74,12 @@ export function useBehaviorSubjectValue<T>(
  */
 export function useLatestEmissionFromObservable<T>(
   observable: Observable<T>,
-  initialValue?: T
+  initialValue: T | typeof EMPTY_PARAMETER = EMPTY_PARAMETER
 ): T {
-  const argumentCount = arguments.length;
   const remainderRef = useRef<Observable<T>>();
 
   const [value, setValue] = useState(() => {
-    if (argumentCount > 1) return initialValue as T;
+    if (initialValue !== EMPTY_PARAMETER) return initialValue;
     else {
       let firstEmissionSet: boolean = false;
       let firstEmission: T;
@@ -110,7 +111,7 @@ export function useLatestEmissionFromObservable<T>(
 
   useEffect(() => {
     const subscription =
-      argumentCount > 1 || !isFirstRunRef.current
+      initialValue !== EMPTY_PARAMETER || !isFirstRunRef.current
         ? observable.subscribe(setValue)
         : remainderRef.current!.subscribe(setValue);
 
