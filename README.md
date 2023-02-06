@@ -62,3 +62,65 @@ export default function App() {
   );
 }
 ```
+
+## `useLatestEmissionFromObservable`
+
+`useLatestEmissionFromObservable` provides you with an observable's latest emission.
+
+**Please note:** If you're using an observable which doesn't immediately emit a value, you'll need to pass in an initial value through the second parameter.
+
+### Example with an observable which immediately emits a value
+
+```javascript
+import { useLatestEmissionFromObservable } from "haakje";
+import { Observable } from "rxjs";
+
+const $randomNumberEverySecond = new Observable((subscriber) => {
+  const emit = () => subscriber.next(Math.random());
+
+  emit();
+
+  setInterval(emit, 1000);
+});
+
+function RandomNumber() {
+  return <div>{useLatestEmissionFromObservable($randomNumberEverySecond)}</div>;
+}
+
+export default function App() {
+  return (
+    <div>
+      <h1>Random numbers</h1>
+      <RandomNumber />
+      <RandomNumber />
+    </div>
+  );
+}
+```
+
+### Example with an observable which doesn't immediately emit a value
+
+```javascript
+import { useLatestEmissionFromObservable } from "haakje";
+import { DateTime } from "luxon";
+import { Subject } from "rxjs";
+import { map } from "rxjs/operators";
+
+const $ping = new Subject();
+const $pingTime = $ping.pipe(map(() => DateTime.now().toISO()));
+
+export default function App() {
+  const lastPingedAt = useLatestEmissionFromObservable($pingTime, undefined);
+
+  return (
+    <div>
+      <span>
+        {lastPingedAt === undefined
+          ? "You've never been pinged!"
+          : lastPingedAt}
+      </span>
+      <button onClick={() => $ping.next()}>Ping!</button>
+    </div>
+  );
+}
+```
