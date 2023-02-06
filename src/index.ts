@@ -1,6 +1,16 @@
 import { DateTime, DateTimeUnit } from "luxon";
-import { useEffect, useState } from "react";
-import { BehaviorSubject, distinctUntilChanged, interval, map } from "rxjs";
+import { useEffect, useRef, useState } from "react";
+import {
+  BehaviorSubject,
+  distinctUntilChanged,
+  first,
+  interval,
+  map,
+  Observable,
+  partition,
+  skip,
+  Subscription,
+} from "rxjs";
 
 const $second = (() => {
   const $secondInternal = new BehaviorSubject<DateTime>(
@@ -53,6 +63,58 @@ export function useBehaviorSubjectValue<T>(
 
     return () => subscription.unsubscribe();
   }, [behaviorSubject]);
+
+  return value;
+}
+
+export function useObservable<T>(
+  observable: Observable<T>,
+  initialValue?: T
+): T {
+  const argumentCount = arguments.length;
+  const remainderRef = useRef<Observable<T>>();
+
+  const [value, setValue] = useState(() => {
+    if (argumentCount > 1) return initialValue as T;
+    else {
+      let firstEmissionSet: boolean = false;
+      let firstEmission: T;
+
+      const [first$, remainder$] = partition(
+        observable,
+        (_, index) => index === 0
+      );
+
+      remainderRef.current = remainder$;
+
+      first$
+        .subscribe((x) => {
+          firstEmissionSet = true;
+          firstEmission = x;
+        })
+        .unsubscribe();
+
+      if (!firstEmissionSet)
+        throw new Error(
+          "The observable you provided didn't immediately emit a value! " +
+            "Did you forget to use startWith or to provide an initialValue when calling useObservable?"
+        );
+      else return firstEmission!;
+    }
+  });
+
+  const isFirstRunRef = useRef(true);
+
+  useEffect(() => {
+    const subscription =
+      argumentCount > 1 || !isFirstRunRef.current
+        ? observable.subscribe(setValue)
+        : remainderRef.current!.subscribe(setValue);
+
+    isFirstRunRef.current = false;
+
+    return () => subscription.unsubscribe();
+  }, [observable]);
 
   return value;
 }
