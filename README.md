@@ -124,3 +124,41 @@ export default function App() {
   );
 }
 ```
+
+## `useReferentiallyStableMemo`
+
+`useReferentiallyStableMemo` works exactly like React's `useMemo`, but it won't "forget" the results. This makes it referentially stable.
+
+```javascript
+import { useReferentiallyStableMemo } from "haakje";
+import { useEffect, useState } from "react";
+
+export default function App() {
+  const [name, setName] = useState("Tess");
+  const [occupation, setOccupation] = useState("Software engineer");
+  const person = useReferentiallyStableMemo(
+    () => ({
+      name,
+      occupation,
+    }),
+    [name, occupation]
+  );
+
+  useEffect(() => console.debug(person), [person]);
+
+  return (
+    <div>
+      <input
+        type="text"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <input
+        type="text"
+        value={occupation}
+        onChange={(e) => setOccupation(e.target.value)}
+      />
+    </div>
+  );
+}
+```
