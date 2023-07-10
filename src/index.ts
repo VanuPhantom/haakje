@@ -6,6 +6,7 @@ import {
   interval,
   map,
   Observable,
+  of,
   partition,
 } from "rxjs";
 import { referentiallyCompareArrayItems } from "./util";
@@ -75,7 +76,7 @@ const EMPTY_PARAMETER = Symbol();
  */
 export function useLatestEmissionFromObservable<T>(
   observable: Observable<T>,
-  initialValue: T | typeof EMPTY_PARAMETER = EMPTY_PARAMETER
+  [initialValue]: [T | typeof EMPTY_PARAMETER] = [EMPTY_PARAMETER]
 ): T {
   const remainderRef = useRef<Observable<T>>();
 

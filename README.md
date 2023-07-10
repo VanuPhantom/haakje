@@ -110,7 +110,7 @@ const $ping = new Subject();
 const $pingTime = $ping.pipe(map(() => DateTime.now().toISO()));
 
 export default function App() {
-  const lastPingedAt = useLatestEmissionFromObservable($pingTime, undefined);
+  const lastPingedAt = useLatestEmissionFromObservable($pingTime, [undefined]);
 
   return (
     <div>
