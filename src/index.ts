@@ -103,7 +103,8 @@ export function useLatestEmissionFromObservable<T>(
       if (!firstEmissionSet)
         throw new Error(
           "The observable you provided didn't immediately emit a value! " +
-            "Did you forget to use startWith or to provide an initialValue when calling useObservable?"
+            "Did you forget to use startWith or to provide an initialValue " +
+            "when calling useLatestEmissionFromObservable?"
         );
       else return firstEmission!;
     }
