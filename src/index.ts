@@ -164,3 +164,12 @@ export function useReferentiallyStableMemo<T>(
 
   return getValue();
 }
+
+export declare function usePromise<T>(
+  promise: Promise<T>,
+  callbacks: {
+    then?(result: T): void;
+    catch?(error: any): void;
+    finally?(): void;
+  }
+): void;
