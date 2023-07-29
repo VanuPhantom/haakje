@@ -26,7 +26,7 @@ test("useTime ticks", async () => {
   }
 }, 8000);
 
-test("usePromise", () => {
+describe("usePromise", () => {
   const fixture = (() => {
     let promise: Promise<string>,
       resolve: (result: string) => void,
