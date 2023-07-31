@@ -54,7 +54,7 @@ describe("usePromise", () => {
     };
   })();
 
-  test("calls the then and finally callbacks", () => {
+  test("calls the then and finally callbacks", async () => {
     const expectedResult = "test";
     const thenCallback = jest.fn(),
       finallyCallback = jest.fn();
@@ -69,15 +69,18 @@ describe("usePromise", () => {
     expect(thenCallback).toHaveBeenCalledTimes(0);
     expect(finallyCallback).toHaveBeenCalledTimes(0);
 
-    fixture.resolve(expectedResult);
+    await act(async () => {
+      fixture.resolve(expectedResult);
+      return fixture.promise;
+    });
 
     expect(thenCallback).toHaveBeenCalledTimes(1);
     expect(thenCallback).toHaveBeenCalledWith(expectedResult);
     expect(finallyCallback).toHaveBeenCalledTimes(1);
   });
 
-  test("calls the catch and finally callbacks", () => {
-    const expectedError = new Error("A fake error occurred!");
+  test("calls the catch and finally callbacks", async () => {
+    const expectedError = "A fake error occurred!";
     const catchCallback = jest.fn(),
       finallyCallback = jest.fn();
 
@@ -91,7 +94,10 @@ describe("usePromise", () => {
     expect(catchCallback).toHaveBeenCalledTimes(0);
     expect(finallyCallback).toHaveBeenCalledTimes(0);
 
-    fixture.reject(expectedError);
+    await act(async () => {
+      fixture.reject(expectedError);
+      return fixture.promise;
+    });
 
     expect(catchCallback).toHaveBeenCalledTimes(1);
     expect(catchCallback).toHaveBeenCalledWith(expectedError);
