@@ -2,11 +2,10 @@ import { DateTime, DateTimeUnit } from "luxon";
 import { useEffect, useRef, useState } from "react";
 import {
   BehaviorSubject,
+  Observable,
   distinctUntilChanged,
   interval,
   map,
-  Observable,
-  of,
   partition,
 } from "rxjs";
 import { referentiallyCompareArrayItems } from "./util";
@@ -165,11 +164,31 @@ export function useReferentiallyStableMemo<T>(
   return getValue();
 }
 
-export declare function usePromise<T>(
+export function usePromise<T>(
   promise: Promise<T>,
   callbacks: {
     then?(result: T): void;
     catch?(error: any): void;
     finally?(): void;
   }
-): void;
+): void {
+  useEffect(() => {
+    let cancelled = false;
+
+    promise.then((result) => {
+      if (!cancelled) callbacks.then?.(result);
+    });
+
+    promise.catch((error) => {
+      if (!cancelled) callbacks.catch?.(error);
+    });
+
+    promise.finally(() => {
+      if (!cancelled) callbacks.finally?.();
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [promise, promise.then, promise.catch, promise.finally]);
+}
