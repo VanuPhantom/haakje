@@ -1,6 +1,7 @@
 import { act, renderHook } from "@testing-library/react";
 import { DateTime, Settings } from "luxon";
-import { useTime } from ".";
+import { Subject } from "rxjs";
+import { useLatestEmissionFromObservable, useTime } from ".";
 import { sleep } from "./utils/time";
 
 test("useTime ticks", async () => {
@@ -25,3 +26,13 @@ test("useTime ticks", async () => {
     expect(endTime - startTime).toBe(1);
   }
 }, 8000);
+
+test("useLatestEmissionFromObservable throws an error upon undetermined behaviour", () => {
+  const observable = new Subject();
+
+  expect(() => {
+    renderHook(() => useLatestEmissionFromObservable(observable));
+  }).toThrow(
+    "The observable you provided didn't immediately emit a value! Did you forget to use startWith or to provide an initialValue when calling useLatestEmissionFromObservable?"
+  );
+});
