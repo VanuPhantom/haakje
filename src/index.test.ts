@@ -1,6 +1,6 @@
 import { act, renderHook } from "@testing-library/react";
 import { DateTime, Settings } from "luxon";
-import { Subject } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import { useLatestEmissionFromObservable, useTime } from ".";
 import { sleep } from "./utils/time";
 
@@ -47,6 +47,79 @@ describe("useLatestEmissionFromObservable", () => {
       );
 
       expect(result.current).toBe(UNIQUE);
+    });
+  });
+
+  describe("when the observable immediately emits", () => {
+    const DEFAULT = Symbol(),
+      EMISSION = Symbol();
+
+    const observable = new Observable<typeof EMISSION>((subscriber) => {
+      subscriber.next(EMISSION);
+      subscriber.complete();
+    });
+
+    test("returns the first emission", () => {
+      const { result } = renderHook(() =>
+        useLatestEmissionFromObservable(observable)
+      );
+
+      expect(result.current).toBe(EMISSION);
+    });
+
+    test("does not return the default value", () => {
+      const { result } = renderHook(() =>
+        useLatestEmissionFromObservable<typeof EMISSION | typeof DEFAULT>(
+          observable,
+          [DEFAULT]
+        )
+      );
+
+      expect(result.current).not.toBe(DEFAULT);
+    });
+
+    describe("followed by another emission", () => {
+      const SECOND_EMISSION = Symbol();
+
+      const observable = new (class ImmediateTestObservable extends Observable<
+        typeof EMISSION | typeof SECOND_EMISSION
+      > {
+        private readonly listeners: Set<() => void>;
+
+        public constructor() {
+          super((subscriber) => {
+            subscriber.next(EMISSION);
+
+            const listener = () => {
+              subscriber.next(SECOND_EMISSION);
+              subscriber.complete();
+            };
+
+            this.listeners.add(listener);
+
+            return () => this.listeners.delete(listener);
+          });
+
+          this.listeners = new Set();
+        }
+
+        public next() {
+          this.listeners.forEach((item) => item());
+        }
+      })();
+
+      test("returns the first emission followed by the second emission", async () => {
+        const { result, rerender } = renderHook(() =>
+          useLatestEmissionFromObservable(observable)
+        );
+
+        expect(result.current).toBe(EMISSION);
+
+        observable.next();
+        rerender();
+
+        expect(result.current).toBe(SECOND_EMISSION);
+      });
     });
   });
 });
