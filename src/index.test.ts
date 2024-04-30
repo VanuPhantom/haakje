@@ -29,7 +29,9 @@ test("useTime ticks", async () => {
 
 describe("useLatestEmissionFromObservable", () => {
   describe("when the observable does not immediately emit", () => {
-    const observable = new Subject();
+    const DEFAULT = Symbol(),
+      EMISSION = Symbol();
+    const observable = new Subject<typeof EMISSION>();
 
     test("throws an error when not provided with a default value", () => {
       expect(() =>
@@ -40,13 +42,32 @@ describe("useLatestEmissionFromObservable", () => {
     });
 
     test("returns the default value", () => {
-      const UNIQUE = Symbol();
-
       const { result } = renderHook(() =>
-        useLatestEmissionFromObservable(observable, [UNIQUE])
+        useLatestEmissionFromObservable<typeof DEFAULT | typeof EMISSION>(
+          observable,
+          [DEFAULT]
+        )
       );
 
-      expect(result.current).toBe(UNIQUE);
+      expect(result.current).toBe(DEFAULT);
+    });
+
+    describe("and emits later", () => {
+      test("returns the default value followed by the emission", () => {
+        const { result, rerender } = renderHook(() =>
+          useLatestEmissionFromObservable<typeof DEFAULT | typeof EMISSION>(
+            observable,
+            [DEFAULT]
+          )
+        );
+
+        expect(result.current).toBe(DEFAULT);
+
+        observable.next(EMISSION);
+        rerender();
+
+        expect(result.current).toBe(EMISSION);
+      });
     });
   });
 
