@@ -27,12 +27,26 @@ test("useTime ticks", async () => {
   }
 }, 8000);
 
-test("useLatestEmissionFromObservable throws an error upon undetermined behaviour", () => {
-  const observable = new Subject();
+describe("useLatestEmissionFromObservable", () => {
+  describe("when the observable does not immediately emit", () => {
+    const observable = new Subject();
 
-  expect(() => {
-    renderHook(() => useLatestEmissionFromObservable(observable));
-  }).toThrow(
-    "The observable you provided didn't immediately emit a value! Did you forget to use startWith or to provide an initialValue when calling useLatestEmissionFromObservable?"
-  );
+    test("throws an error when not provided with a default value", () => {
+      expect(() =>
+        renderHook(() => useLatestEmissionFromObservable(observable))
+      ).toThrow(
+        "The observable you provided didn't immediately emit a value! Did you forget to use startWith or to provide an initialValue when calling useLatestEmissionFromObservable?"
+      );
+    });
+
+    test("returns the default value", () => {
+      const UNIQUE = Symbol();
+
+      const { result } = renderHook(() =>
+        useLatestEmissionFromObservable(observable, [UNIQUE])
+      );
+
+      expect(result.current).toBe(UNIQUE);
+    });
+  });
 });
