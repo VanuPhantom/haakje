@@ -6,7 +6,6 @@
   "typings": "dist/index.d.ts",
   "files": [
     "dist",
-    "!dist/**/*.test.*",
     "src",
     "tsconfig.json",
     "jest.config.js"
