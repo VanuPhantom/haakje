@@ -4,6 +4,13 @@
   "description": "Provides extra hooks to make working with React hooks easier",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "!dist/**/*.test.*",
+    "src",
+    "tsconfig.json",
+    "jest.config.js"
+  ],
   "scripts": {
     "build": "tsc",
     "test": "jest"
