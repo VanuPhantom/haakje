@@ -10,19 +10,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/thomasio101/haakje.git"
+    "url": "git+https://github.com/VanuPhantom/haakje.git"
   },
   "keywords": [
     "hooks",
     "time",
     "react"
   ],
-  "author": "Tess Ellenoir Duursma (TheVanuPhantom)",
+  "author": "Tess Ellenoir Duursma <tess@vanu.dev>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/thomasio101/haakje/issues"
+    "url": "https://github.com/VanuPhantom/haakje/issues"
   },
-  "homepage": "https://github.com/thomasio101/haakje#readme",
+  "homepage": "https://github.com/VanuPhantom/haakje#readme",
   "devDependencies": {
     "@testing-library/react": "^14.0.0",
     "@types/jest": "^29.5.3",
