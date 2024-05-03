@@ -12,6 +12,7 @@
   ],
   "scripts": {
     "build": "tsc",
+    "prepack": "npm test && npm run build",
     "test": "jest"
   },
   "repository": {
