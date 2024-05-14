@@ -58,7 +58,9 @@ export function useBehaviorSubjectValue<T>(
   const [value, setValue] = useState<T>(() => behaviorSubject.value);
 
   useEffect(() => {
-    const subscription = behaviorSubject.subscribe(setValue);
+    const subscription = behaviorSubject.subscribe((value) =>
+      setValue(() => value)
+    );
 
     return () => subscription.unsubscribe();
   }, [behaviorSubject]);
@@ -115,8 +117,8 @@ export function useLatestEmissionFromObservable<T>(
   useEffect(() => {
     const subscription =
       initialValue !== EMPTY_PARAMETER || !isFirstRunRef.current
-        ? observable.subscribe(setValue)
-        : remainderRef.current!.subscribe(setValue);
+        ? observable.subscribe((value) => setValue(() => value))
+        : remainderRef.current!.subscribe((value) => setValue(() => value));
 
     isFirstRunRef.current = false;
 
