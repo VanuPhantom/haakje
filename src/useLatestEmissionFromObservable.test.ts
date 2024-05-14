@@ -118,4 +118,36 @@ describe("useLatestEmissionFromObservable", () => {
       });
     });
   });
+
+  describe("when the observable emits a function", () => {
+    const observable = new Subject<() => void>();
+
+    test("returns the function", () => {
+      const { result, rerender } = renderHook(() =>
+        useLatestEmissionFromObservable(observable, [undefined])
+      );
+
+      expect(result.current).toBe(undefined);
+
+      const NOOP = jest.fn();
+      observable.next(NOOP);
+      rerender();
+
+      expect(result.current).toBe(NOOP);
+    });
+
+    test("does not call the function", () => {
+      const { result, rerender } = renderHook(() =>
+        useLatestEmissionFromObservable(observable, [undefined])
+      );
+
+      expect(result.current).toBe(undefined);
+
+      const NOOP = jest.fn();
+      observable.next(NOOP);
+      rerender();
+
+      expect(NOOP).not.toBeCalled();
+    });
+  });
 });
