@@ -2,12 +2,15 @@ BLUE='\033[0;34m'
 GREEN='\033[0;32m'
 NC='\033[0m'
 
+BOLD='\033[1m'
+
 while getopts "hc" flag; do
  case $flag in
    h) # Handle the -h flag
    # Display script help information
    echo "The build script for Haakje's docs"
-   echo "Flags:\n\r-h: Show this help page\n\r-c: Perform a clean build"
+   echo "\n${BOLD}Usage:${NC}\n\r./build.sh [-c|-h]"
+   echo "\n${BOLD}Flags:\n\r${NC}-h: Show this help page\n\r-c: Perform a clean build"
    exit
    ;;
    c) # Handle the -c flag
