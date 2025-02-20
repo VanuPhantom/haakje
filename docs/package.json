@@ -3,7 +3,10 @@
   "version": "0.0.1",
   "description": "The documentation website for Haakje",
   "main": "dist/index.js",
-  "scripts": {},
+  "scripts": {
+    "build": "./build.sh -c",
+    "dev": "(trap 'kill 0' SIGINT; npx watch ./build.sh ./markup ./stylesheets & npx live-server dist)"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/VanuPhantom/haakje.git"
@@ -17,5 +20,10 @@
   "bugs": {
     "url": "https://github.com/VanuPhantom/haakje/issues"
   },
-  "homepage": "https://github.com/VanuPhantom/haakje#readme"
+  "homepage": "https://github.com/VanuPhantom/haakje#readme",
+  "devDependencies": {
+    "live-server": "^1.2.2",
+    "sass": "^1.85.0",
+    "watch": "^1.0.2"
+  }
 }
