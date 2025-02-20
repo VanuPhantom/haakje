@@ -1,0 +1,121 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
+// Colours
+$air: #4b8bdb;
+$sea: #5e5a86;
+$autumn: #db824b;
+$amber: #dba84b;
+$subtle-light: #8a7755;
+$subtle-dark: #5c534d;
+
+$air-text: white;
+$sea-text: white;
+
+// Grid
+$grid-unit: 16px;
+
+@mixin padded {
+  padding: $grid-unit;
+}
+
+// Typography
+@mixin heading {
+  font-size: $grid-unit * 3;
+}
+
+@mixin secondary {
+  font-size: $grid-unit * 1.5;
+}
+
+@mixin body {
+  font-size: $grid-unit;
+}
+
+// Styles
+html {
+  @extend .sea;
+}
+
+body {
+  @include body;
+
+  padding: 0;
+  margin: 0;
+
+  font-family: "Roboto Condensed", serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+}
+
+.air {
+  background-color: $air;
+  color: $air-text;
+}
+
+.sea {
+  background-color: $sea;
+  color: $sea-text;
+}
+
+.translucent {
+  background-color: rgba($subtle-dark, 0.7);
+  backdrop-filter: saturate(100%) blur(20px);
+  color: white;
+}
+
+.navigation {
+  @include secondary;
+  @include padded;
+
+  position: fixed;
+  width: 100%;
+}
+
+.intro {
+  @include secondary;
+  @include padded;
+
+  padding-top: $grid-unit * (3.5 + 1);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  & > h1,
+  & > h2 {
+    display: block;
+    margin: 0;
+  }
+
+  & > h1 {
+    @include heading;
+  }
+
+  & > h2 {
+    margin-top: $grid-unit;
+  }
+}
+
+.content {
+  @include body;
+  @include padded;
+
+  margin-left: auto;
+  margin-right: auto;
+
+  max-width: 1280px;
+
+  h2 {
+    @include secondary;
+    color: $amber;
+
+    margin-top: 0;
+    margin-bottom: $grid-unit / 2;
+  }
+
+  p {
+    margin-top: 0;
+    margin-bottom: $grid-unit;
+  }
+}
