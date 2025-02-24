@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "./build.sh -c",
-    "dev": "(trap 'kill 0' SIGINT; npx watch ./build.sh ./markup ./stylesheets --interval .5 & npx live-server dist)"
+    "dev": "(trap 'kill 0' SIGINT; npx watch ./build.sh ./static ./stylesheets --interval .5 & npx live-server dist)"
   },
   "repository": {
     "type": "git",

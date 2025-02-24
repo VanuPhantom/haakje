@@ -23,8 +23,8 @@ done
 
 echo "${BLUE}Creating dist directory...${NC}"
 mkdir -p dist
-echo "${BLUE}Copying markup...${NC}"
-cp -R markup/* dist/
+echo "${BLUE}Copying static files...${NC}"
+cp -R static/* dist/
 echo "${BLUE}Compiling SASS...${NC}"
 npx sass stylesheets/:dist/
 echo "${GREEN}Done.${NC}"
