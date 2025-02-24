@@ -74,9 +74,10 @@ body {
 
 .intro {
   @include secondary;
-  @include padded;
+  // @include padded;
 
-  padding-top: $grid-unit * (3.5 + 1);
+  padding: $grid-unit * 3;
+  padding-top: $grid-unit * (3.5 + 3);
 
   display: flex;
   flex-direction: column;
