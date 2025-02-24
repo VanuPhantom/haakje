@@ -108,11 +108,11 @@ body {
 
     * {
       &:not(:first-child) {
-        margin-left: $grid-unit / 2;
+        margin-left: $grid-unit * .5;
       }
 
       &:not(:last-child) {
-        margin-right: $grid-unit / 2;
+        margin-right: $grid-unit * .5;
       }
     }
 
@@ -162,7 +162,7 @@ body {
     color: $amber;
 
     margin-top: 0;
-    margin-bottom: $grid-unit / 2;
+    margin-bottom: $grid-unit * 0.5;
   }
 
   p {
