@@ -20,15 +20,30 @@ $grid-unit: 16px;
 
 // Typography
 @mixin heading {
-  font-size: $grid-unit * 3;
+  $size: $grid-unit * 3;
+  font-size: $size;
+
+  .icon {
+    height: $size;
+  }
 }
 
 @mixin secondary {
-  font-size: $grid-unit * 1.5;
+  $size: $grid-unit * 1.5;
+  font-size: $size;
+
+  .icon {
+    height: $size;
+  }
 }
 
 @mixin body {
-  font-size: $grid-unit;
+  $size: $grid-unit;
+  font-size: $size;
+
+  .icon {
+    height: $size;
+  }
 }
 
 // Styles
@@ -66,10 +81,45 @@ body {
 
 .navigation {
   @include secondary;
-  @include padded;
 
   position: fixed;
   width: 100%;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  /* Use margins on the first and final items instead of padding
+   * as padding is not included in flexbox calculations. */
+  padding-top: $grid-unit;
+  padding-bottom: $grid-unit;
+
+  > :first-child {
+    margin-left: $grid-unit;
+  }
+
+  > :last-child {
+    margin-right: $grid-unit;
+  }
+
+  .end {
+    display: flex;
+    flex-direction: row;
+
+    * {
+      &:not(:first-child) {
+        margin-left: $grid-unit / 2;
+      }
+
+      &:not(:last-child) {
+        margin-right: $grid-unit / 2;
+      }
+    }
+
+    a {
+      display: block;
+    }
+  }
 }
 
 .intro {
