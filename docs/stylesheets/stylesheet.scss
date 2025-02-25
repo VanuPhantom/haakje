@@ -103,6 +103,7 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
 
   /* Use margins on the first and final items instead of padding
    * as padding is not included in flexbox calculations. */
@@ -131,8 +132,9 @@ body {
       }
     }
 
-    a {
+    a:has(> .icon) {
       display: block;
+      height: $grid-unit * 1.5;
     }
   }
 }
