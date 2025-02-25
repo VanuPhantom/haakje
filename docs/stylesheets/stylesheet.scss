@@ -38,7 +38,12 @@ $grid-unit: 16px;
 }
 
 @mixin body {
-  $size: $grid-unit;
+  font-family: "Roboto", serif;
+  font-optical-sizing: auto;
+  font-weight: 350;
+  font-style: normal;
+
+  $size: $grid-unit * 1.25;
   font-size: $size;
 
   .icon {
