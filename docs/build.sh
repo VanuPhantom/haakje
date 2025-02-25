@@ -31,4 +31,6 @@ echo "${BLUE}Bundling JS...${NC}"
 for filename in ./javascript/*.js; do
   npx browserify $filename -o "./dist/$(basename $filename)"
 done
+echo "${BLUE}Bundling highlight.js styles...${NC}"
+cp node_modules/highlight.js/styles/shades-of-purple.min.css dist/highlight.css
 echo "${GREEN}Done.${NC}"

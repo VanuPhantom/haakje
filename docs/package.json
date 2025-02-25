@@ -26,5 +26,8 @@
     "live-server": "^1.2.2",
     "sass": "^1.85.0",
     "watch": "^1.0.2"
+  },
+  "dependencies": {
+    "highlight.js": "^11.11.1"
   }
 }
