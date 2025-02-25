@@ -108,11 +108,11 @@ body {
 
     * {
       &:not(:first-child) {
-        margin-left: $grid-unit * .5;
+        margin-left: $grid-unit * 0.5;
       }
 
       &:not(:last-child) {
-        margin-right: $grid-unit * .5;
+        margin-right: $grid-unit * 0.5;
       }
     }
 
