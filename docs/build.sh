@@ -27,4 +27,8 @@ echo "${BLUE}Copying static files...${NC}"
 cp -R static/* dist/
 echo "${BLUE}Compiling SASS...${NC}"
 npx sass stylesheets/:dist/
+echo "${BLUE}Bundling JS...${NC}"
+for filename in ./javascript/*.js; do
+  npx browserify $filename -o "./dist/$(basename $filename)"
+done
 echo "${GREEN}Done.${NC}"
