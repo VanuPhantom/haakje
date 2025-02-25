@@ -46,6 +46,8 @@ $grid-unit: 16px;
   $size: $grid-unit * 1.25;
   font-size: $size;
 
+  line-height: 1.35;
+
   .icon {
     height: $size;
   }
