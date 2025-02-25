@@ -49,6 +49,14 @@ $grid-unit: 16px;
   .icon {
     height: $size;
   }
+
+  a {
+    color: $amber;
+  }
+
+  a:visited {
+    color: $autumn;
+  }
 }
 
 // Styles
