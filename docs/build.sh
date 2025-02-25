@@ -25,6 +25,10 @@ echo "${BLUE}Creating dist directory...${NC}"
 mkdir -p dist
 echo "${BLUE}Copying static files...${NC}"
 cp -R static/* dist/
+echo "${BLUE}Processing markup...${NC}"
+for filename in ./markup/*.html; do
+  node preprocess.js $filename > ./dist/$(basename $filename)
+done
 echo "${BLUE}Compiling SASS...${NC}"
 npx sass stylesheets/:dist/
 echo "${BLUE}Bundling JS...${NC}"
