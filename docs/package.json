@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "./build.sh -c",
-    "dev": "(trap 'kill 0' SIGINT; npx watch ./build.sh ./static ./stylesheets ./javascript ./markup --interval .5 & (sleep .5 && npx live-server dist --wait=500))"
+    "dev": "(trap 'kill 0' SIGINT; npx watch ./build.sh ./static ./stylesheets ./javascript ./markup ./examples --interval .5 & (sleep .5 && npx live-server dist --wait=500))"
   },
   "repository": {
     "type": "git",
@@ -31,6 +31,8 @@
     "watch": "^1.0.2"
   },
   "dependencies": {
-    "highlight.js": "^11.11.1"
+    "haakje": "../",
+    "highlight.js": "^11.11.1",
+    "rxjs": "../node_modules/rxjs"
   }
 }

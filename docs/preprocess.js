@@ -12,7 +12,7 @@ const [fileName] = arguments;
 const fs = require("fs");
 const fileContents = fs.readFileSync(fileName).toString();
 
-// Initiate the DOM
+// Initialise the DOM
 var jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 const { window } = new JSDOM(fileContents);
@@ -20,14 +20,23 @@ const { document } = new JSDOM(fileContents).window;
 global.window = window;
 global.document = document;
 
-// Process the raw HTML
+// Initialise jQuery
 const $ = require("jquery");
+
+// Insert templates
 $("[x-include]").each((index, element) => {
   $(element).text(
     fs.readFileSync(element.getAttribute("x-include")).toString()
   );
   element.removeAttribute("x-include");
 });
+
+// Run the code highlighter
+const highlight = require("highlight.js");
+// highlight.highlightAll();
+$("[class^=language-]").each((index, element) =>
+  highlight.highlightElement(element)
+);
 
 // Output the result
 console.log($("html").prop("outerHTML"));
